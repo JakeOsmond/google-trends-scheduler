@@ -1,34 +1,53 @@
-# trend_scraper.py
 from pytrends.request import TrendReq
 import pandas as pd
 import os
 from datetime import datetime, timedelta
 
-# Search term(s)
+# --------- Settings ---------
+# Search terms
 all_search_terms = ["Travel Insurance"]
+
+# Geographic region
 geo = 'GB'
 
-# Date range: last 3 years
+# Number of years of data
+years = 3
+
+# Folder to save output (must be 'docs' for GitHub Pages)
+output_folder = "docs"
+output_filename = "travel_insurance_trend.csv"
+output_path = os.path.join(output_folder, output_filename)
+
+# --------- Date Range ---------
 end_date = datetime.today().strftime('%Y-%m-%d')
-start_date = (datetime.today() - timedelta(days=365 * 3)).strftime('%Y-%m-%d')
+start_date = (datetime.today() - timedelta(days=365 * years)).strftime('%Y-%m-%d')
 timeframe = f'{start_date} {end_date}'
 
-# Set up pytrends
+# --------- Set up pytrends ---------
 pytrends = TrendReq(hl='en-UK', tz=0)
 
-# Collect data
+# --------- Fetch Data ---------
 final_df = None
-pytrends.build_payload(all_search_terms, timeframe=timeframe, geo=geo)
-df = pytrends.interest_over_time().reset_index()
+batch_size = 5
 
-# Drop partial column
-if 'isPartial' in df.columns:
-    df = df.drop(columns=['isPartial'])
+for i in range(0, len(all_search_terms), batch_size):
+    batch = all_search_terms[i:i + batch_size]
+    pytrends.build_payload(batch, timeframe=timeframe, geo=geo)
+    df = pytrends.interest_over_time().reset_index()
 
-final_df = df.sort_values('date')
+    # Remove 'isPartial' column if it exists
+    if 'isPartial' in df.columns:
+        df = df.drop(columns=['isPartial'])
 
-# Save to /output directory
-file_path = "docs/travel_insurance_trend.csv"
-final_df.to_csv(file_path, index=False)
+    # Merge batch into final_df
+    if final_df is None:
+        final_df = df
+    else:
+        final_df = pd.merge(final_df, df, on='date', how='outer')
 
-print(f"✅ File saved to: {file_path}")
+# --------- Save Output ---------
+final_df = final_df.sort_values('date')
+os.makedirs(output_folder, exist_ok=True)
+final_df.to_csv(output_path, index=False)
+
+print(f"✅ File saved to: {output_path}")
