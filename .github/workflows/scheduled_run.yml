@@ -24,6 +24,14 @@ jobs:
       - name: Run Google Trends Script
         run: python trend_scraper.py
 
+      - name: Commit CSV to docs folder
+        run: |
+            git config --global user.name "Jake Osmond (GitHub Actions)"
+            git config --global user.email "github-actions@example.com"
+            git add docs/travel_insurance_trend.csv
+            git commit -m "Update CSV with weekly trends"
+            git push
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
