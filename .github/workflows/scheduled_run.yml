@@ -25,17 +25,12 @@ jobs:
         run: python trend_scraper.py
 
       - name: Commit CSV to docs folder
-        env:
-          TOKEN: ${{ secrets.ACTIONS_PAT }}
         run: |
           git config --global user.name "Jake Osmond (GitHub Actions)"
-          git config --global user.email "github-actions@example.com"
-          git remote set-url origin https://x-access-token:${TOKEN}@github.com/${{ github.repository }}
-          git fetch origin
-          git checkout main
+          git config --global user.email "github-actions@github.com"
           git add docs/travel_insurance_trend.csv
           git commit -m "Update CSV with weekly trends" || echo "No changes to commit"
-          git push
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
