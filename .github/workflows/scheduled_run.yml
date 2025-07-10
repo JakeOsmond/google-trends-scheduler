@@ -28,4 +28,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: trend-csv
-          path: output/travel_insurance_trend.csv
+          path: docs/travel_insurance_trend.csv
