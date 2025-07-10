@@ -28,9 +28,7 @@ if 'isPartial' in df.columns:
 final_df = df.sort_values('date')
 
 # Save to /output directory
-output_dir = "output"
-os.makedirs(output_dir, exist_ok=True)
-file_path = os.path.join(output_dir, "travel_insurance_trend.csv")
+file_path = "docs/travel_insurance_trend.csv"
 final_df.to_csv(file_path, index=False)
 
 print(f"✅ File saved to: {file_path}")
