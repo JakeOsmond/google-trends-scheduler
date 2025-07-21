@@ -11,12 +11,10 @@ output_folder = "docs"
 output_filename = "travel_insurance_trend.csv"
 output_path = os.path.join(output_folder, output_filename)
 
-# --------- Date Range (ending on most recent Saturday) ---------
+# --------- Date Range (ending on today) ---------
 today = datetime.today()
-days_since_saturday = (today.weekday() + 2) % 7  # 0 = Monday, Saturday is 5
-end_date_dt = today - timedelta(days=days_since_saturday)
-end_date = end_date_dt.strftime('%Y-%m-%d')
-start_date = (end_date_dt - timedelta(days=365 * years)).strftime('%Y-%m-%d')
+end_date = today.strftime('%Y-%m-%d')
+start_date = (today - timedelta(days=365 * years)).strftime('%Y-%m-%d')
 timeframe = f'{start_date} {end_date}'
 
 # --------- Set up pytrends ---------
@@ -32,9 +30,9 @@ for i in range(0, len(all_search_terms), batch_size):
     df = pytrends.interest_over_time().reset_index()
 
     # Exclude partial rows
-    if 'isPartial' in df.columns:
-        df = df[df['isPartial'] == False]
-        df = df.drop(columns=['isPartial'])
+    # if 'isPartial' in df.columns:
+    #     df = df[df['isPartial'] == False]
+    #     df = df.drop(columns=['isPartial'])
 
     # Merge batch into final_df
     if final_df is None:
