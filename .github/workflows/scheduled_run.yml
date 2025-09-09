@@ -45,7 +45,9 @@ jobs:
 
 
       - name: Run Google Trends Script
+        timeout-minutes: 6
         run: python trend_scraper.py
+
 
       - name: Commit CSV to docs folder
         env:
