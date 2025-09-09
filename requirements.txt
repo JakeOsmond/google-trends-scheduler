@@ -1,2 +1,1 @@
-git+https://github.com/GeneralMills/pytrends@<commit_sha>
-pandas==2.2.2
+pandas
