@@ -1,4 +1,4 @@
-name: Weekly Google Trends Scraper
+name: Weekly Google Trends Scraper (Holiday)
 
 on:
   schedule:
