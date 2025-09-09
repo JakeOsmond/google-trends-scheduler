@@ -3,6 +3,15 @@ import pandas as pd
 import os
 from datetime import datetime, timedelta
 
+requests_args = {
+'headers': {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
+    }
+}
+
+# Only need to run this once, the rest of requests will use the same session.
+pytrends = TrendReq(requests_args=requests_args)
+
 # --------- Settings ---------
 all_search_terms = ["Travel Insurance"]
 geo = 'GB'
