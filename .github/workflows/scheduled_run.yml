@@ -39,9 +39,10 @@ jobs:
           pip install -r requirements.txt
           python - <<'PY'
           import pytrends, urllib3
-          print("pytrends version:", getattr(pytrends, "__version__", "unknown"))
-          print("urllib3 version:", urllib3.__version__)
+          print("pytrends:", getattr(pytrends, "__version__", "unknown"))
+          print("urllib3:", urllib3.__version__)
           PY
+
 
       - name: Run Google Trends Script
         run: python trend_scraper.py
